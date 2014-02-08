@@ -1,0 +1,16 @@
+﻿{
+	"title":"Bilar på flaket",
+	"question":"Korrekt! Marcus lastar också gamla bilar på sitt lastbilsflak. Hur många bilar kan han lasta på flaket?",
+	"answervalue":"$y$",
+    "answerunit":"st",
+    "tolerance":"0.1",
+    "followup":"none",
+
+        "clues" : {
+"a" : {"message":["Fundera över vikter, både hos cyklarna och hur mycket som flaket klarar av.", "Det här är en annan ledtråd."], "value":2, "prio":1}
+         },
+
+	"questions": { 
+"a" : { "keywords":"VIKT&VÄGER,BIL", "formulation":"Hur mycket väger en bil?", "answer":"En genomsnittlig bil väger 10 gånger mer än en genomsnittlig cykel.", "clue":"a" }, 
+	 }
+}

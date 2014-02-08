@@ -1,0 +1,32 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  
+  <script src="mocha.js"></script>
+  <script src="chai.js"></script>
+
+
+  <script>mocha.setup('bdd')</script>
+  <script>expect = chai.expect</script>
+
+  <script src="../mathevaluator/evaluator.js"></script>
+  <script src="../mathevaluator/replacer.js"></script>  
+  <script src="../mathevaluator/expressionFinder.js"></script>  
+  <script src="../mathevaluator/matte.js"></script>  
+  <script src="../mathevaluator/tofunc.js"></script>  
+  <script src="../mathengine.js"></script>  
+  <script src="debug.js"></script>
+
+  <script src="test.js"></script>
+
+  
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>

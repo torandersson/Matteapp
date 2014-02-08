@@ -1,0 +1,11 @@
+### Simple math evaluator with variable support
+
+
+
+## Evaluator.js 
+	Evaluates math expressions ie "2+2+3+4+5", "2^2", "2*-1"
+
+
+## Replacer.js 
+	Replaces variables in expression so you are able to write 
+

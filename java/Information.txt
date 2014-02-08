@@ -1,0 +1,7 @@
+Motorn ligger i Mathengine.java
+
+Har skrivit ett enkelt användande av den som finns i Exempel.java
+
+Filerna debug.json och debug2.json innehåller testuppgifter
+
+Använder de två bifogade javabiblioteken i projektet
