@@ -371,10 +371,11 @@ Mathengine.prototype.calculate = function(terms)
 {
     try
     {
-        return evaluateText("$"+terms.trim()+"$");
+        return this.evaluateText("$"+terms.trim()+"$");
     }
     catch (e)
     {
+        console.log(e)
         return 0;
     }        
 }
