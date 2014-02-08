@@ -169,12 +169,12 @@ Mathengine.prototype.readAssignmentData = function() {
     return true;
 };
 
-    /**
-     * Evaluate a string and replace the variable references with actual values.
-     * 
-     * @param text The text string to evaluate.
-     * @return The same, but processed, string.
-     */
+/**
+ * Evaluate a string and replace the variable references with actual values.
+ * 
+ * @param text The text string to evaluate.
+ * @return The same, but processed, string.
+ */
 Mathengine.prototype.evaluateText = function(text) {
 	var textEval = new Matte({openToken:"%",closeToken:"%"});
 	var evalExpression = textEval.Parse(text,this.values_Lists);
@@ -261,8 +261,8 @@ Mathengine.prototype.processQuestions = function()
 
 
 /**
- * @return True if there were no problems.
- */
+* @return True if there were no problems.
+*/
 Mathengine.prototype.processWrongAnswers = function()
 {
     try
