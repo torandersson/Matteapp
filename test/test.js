@@ -3,7 +3,7 @@
 
 describe('Mathengine.js', function(){
     
-    describe('Mathengine', function(){
+    describe('Enginge', function(){
         
         it('GetMainQuestion', function(){    
            	var engine = new Mathengine(debug_exercise);
@@ -17,8 +17,28 @@ describe('Mathengine.js', function(){
             expect(score).to.equal(3);
         }); 
 
+        it('getfoundanswers', function(){    
+           	var engine = new Mathengine(debug_exercise);
+            var result = engine.getFoundAnswers();
+            expect(result.length).to.equal(0);
+        }); 
 
-        it('calculate(expr)-plus', function(){    
+        it('askquetion',function(){
+            var engine = new Mathengine(debug_exercise);
+
+
+            var data = "Hur mycket väger en cykel?";
+            var questions = engine.searchQuestion(data);
+
+            console.log("questions",questions);
+
+        });
+
+    });
+	
+	 describe('Calculate expressions', function(){
+	 	
+	 	 it('calculate(expr)-plus', function(){    
            	var engine = new Mathengine(debug_exercise);
             var result = engine.calculate("1+2+3+0.1");
             expect(result).to.equal('6.1');
@@ -43,13 +63,11 @@ describe('Mathengine.js', function(){
             expect(result).to.equal('8');
         }); 
 
-         it('calculate(expr)-divided', function(){    
+        it('calculate(expr)-divided', function(){    
            	var engine = new Mathengine(debug_exercise);
             var result = engine.calculate("42/2");
             expect(result).to.equal('21');
         }); 
-
-
-    })
-
+	 });
+	
 })

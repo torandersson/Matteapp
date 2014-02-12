@@ -55,10 +55,10 @@ function Mathengine (fname) {
     	this.init(fname);
     }
 
-    this.clear();
+    //this.clear();
 }
 
-Mathengine.prototype.clear = function(first_argument) {
+Mathengine.prototype.clear = function() {
 	this.values_Variables = {};
     this.values_Lists = {};
     this.values_Questions = [];
@@ -207,53 +207,65 @@ Mathengine.prototype.getUnitCategory = function(unit) {
  */
 Mathengine.prototype.processQuestions = function()
 {
+    
     try
     {
         var questions = this.m_Question["questions"];
+        
 
         if (questions == null){
             return true;
         }
         
-        for(var prop in questions)
+        
+        for(var property in questions)
         {
-            var q = questions[prop];
+        
+       
+            var q = questions[property];
 
-            var keywords = evaluateText(q["keywords"]);
+            var keywords = this.evaluateText(q["keywords"]);
             var keywordsarray = keywords.split(",");
-            var formulation = evaluateText(q["formulation"]);
-            var answer = evaluateText(q["answer"]);
+            var formulation = this.evaluateText(q["formulation"]);
+            var answer = this.evaluateText(q["answer"]);
             var temp = q["clue"];
             
             var clues = [];
-            if(Object.prototype.toString.call( temp ) === '[object Array]') 
+           if(Object.prototype.toString.call( temp ) === '[object Array]') 
             {
-                var temp2 = temp;
-                for (var i=0; i<temp2.length; i++){
-                    clues.push(temp2[i]);
-                }
+                clues = temp.slice(0)
             }
             else
             {
-                var temp2 = temp;
-                clues.push(temp2);
+                clues.push(temp);
             }                
             
             var saveString = q["save"];
+            
             var save = true;
-            if (saveString != null)
-                if (saveString == "false")
+            if (saveString != null){
+                if (saveString == "false"){
                     save = false;
+                }
+                
+            }
 
-            this.values_Questions.add(new MathengineQuestionData(
-                    keywordsarray, formulation, answer, clues, save));
-        }
+           
+            var questionData = new QuestionData(
+                    keywordsarray, formulation, answer, clues, save);
+            this.values_Questions.push(questionData);
         
+                  
+
+        }
+
+
+      
         return true;
     }
     catch(e)
     {
-        console.log("e",e)
+       console.log("e",e)
     }
 
     return false;
@@ -277,7 +289,7 @@ Mathengine.prototype.processWrongAnswers = function()
         {
             var q = wronganswers[prop];
 
-            var value =	evaluateText(q["value"]).trim();
+            var value =	this.evaluateText(q["value"]).trim();
             var unit = q["unit"];
             var message = q["message"];
             var temp = q["clue"];
@@ -286,10 +298,7 @@ Mathengine.prototype.processWrongAnswers = function()
             
             if (Object.prototype.toString.call( temp ) === '[object Array]') 
              {
-                var temp2 = temp;
-                for (var i=0; i<temp2.length(); i++){
-                    clues.push(temp2[i]);
-                }
+                clues = temp.slice(0);
             }
             else
             {
@@ -297,7 +306,7 @@ Mathengine.prototype.processWrongAnswers = function()
                 clues.push(temp2);
             }                   
 
-            this.values_WrongAnswers.add(new MathengineWrongAnswerData(
+            this.values_WrongAnswers.push(new WrongAnserData(
                     value, unit, message, clues));
         }
         
@@ -332,30 +341,28 @@ Mathengine.prototype.processClues = function()
             
             var msg = [];
             
-             if (Object.prototype.toString.call( temp ) === '[object Array]') 
+             if (Object.prototype.toString.call( messages ) === '[object Array]') 
              {
-                var temp2 = temp;
-                for (var i=0; i<temp2.length(); i++){
-                    msg.push(temp2[i]);
-                }
+                for (var i = 0; i < messages.length; i++) {
+                   msg.push(this.evaluateText(messages[i]));
+                };
             }
             else
             {
-                var temp2 = temp;
-                msg.push(temp2);
+                msg.push(this.evaluateText(messages));
             }   
             
             var prio = clue["prio"];
             var value = clue["value"];                
             
-            this.values_Clues[prop] = new MathengineClueData(prio, value, msg);
+            this.values_Clues[prop] = new ClueData(prio, value, msg);
         }
         
         return true;
     }
     catch (e)
     {
-        console.log("e",e);
+       console.log("e",e);
     }
     
     return false;
@@ -375,7 +382,7 @@ Mathengine.prototype.calculate = function(terms)
     }
     catch (e)
     {
-        console.log(e)
+       console.log(e)
         return 0;
     }        
 }
@@ -539,10 +546,13 @@ Mathengine.prototype.searchQuestion = function(keywords)
     this.run_QuestionOptions = [];
     this.run_QuestionOptionsIndex = [];
 
-    for (var i=0; i<this.values_Questions.length(); i++)
-    {
-        var fit = this.values_Questions[i].fits(keywords);
+    console.log("this.values_Questions",this.values_Questions)
 
+    for (var i=0; i<this.values_Questions.length; i++)
+    {
+        var fit = this.values_Questions[i].Fits(keywords);
+       
+        console.log("fit",fit);
         if (fit)
         {
             this.run_QuestionOptions.push(this.values_Questions[i].formulation);
@@ -550,7 +560,7 @@ Mathengine.prototype.searchQuestion = function(keywords)
         }
     }
 
-    if (this.run_QuestionOptions.length() == 1)
+    if (this.run_QuestionOptions.length == 1)
         askQuestion(0);
 
     return this.run_QuestionOptions;
@@ -565,11 +575,11 @@ Mathengine.prototype.searchQuestion = function(keywords)
  */
 Mathengine.prototype.askQuestion = function(index)
 {
-    if (this.values_Questions.length() == 0){
+    if (this.values_Questions.length == 0){
         return false;
     }
         
-    if (index < 0 || index >= values_Questions.length()){
+    if (index < 0 || index >= values_Questions.length){
         return false;
     }
     
@@ -578,7 +588,7 @@ Mathengine.prototype.askQuestion = function(index)
     
     this.run_QuestionAnswer = question.answer;
     
-    for (var i=0; i<question.clues.length(); i++)
+    for (var i=0; i<question.clues.length; i++)
     {
         if (!question.clues[i] == ".")
         {
@@ -745,14 +755,14 @@ QuestionData.prototype.Fits = function(s) {
 
 	s = s.trim().replace(/\?/g,' ').toUpperCase();
 	f = s.split(" ");
-
+    console.log("f",f)
 	for (var i = 0; i < this.keywords.length; i++) {
 		var keyword = this.keywords[i];
 		var temp = false;
 		var options = keyword.trim().split("&");
 		for (var k = 0; k < options.length && !temp; k++) {
 			for (var j = 0; j < f.length || !temp; j++) {
-				if (f[j].trim().contains(options[k].trim()))
+				if (f[j].trim().indexOf(options[k].trim()) != -1)
                 {
                 	temp = true;
                 }
