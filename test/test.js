@@ -23,15 +23,27 @@ describe('Mathengine.js', function(){
             expect(result.length).to.equal(0);
         }); 
 
-        it('askquetion',function(){
+        it('searchQuestion',function(){
             var engine = new Mathengine(debug_exercise);
-
 
             var data = "Hur mycket väger en cykel?";
             var questions = engine.searchQuestion(data);
 
-            console.log("questions",questions);
+            expect(questions[0]).to.equal("Hur mycket väger en cykel?");
+            expect(questions[1]).to.equal("Hur stor yta tar en cykel upp?")
 
+        });
+
+         it('askQuestion',function(){
+            var engine = new Mathengine(debug_exercise);
+
+            var data = "Hur mycket väger en cykel?";
+            var questions = engine.searchQuestion(data);
+
+           
+            var questions = engine.askQuestion(0);;
+
+            console.log(engine.getAnswer());
         });
 
     });

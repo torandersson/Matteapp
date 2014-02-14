@@ -546,13 +546,10 @@ Mathengine.prototype.searchQuestion = function(keywords)
     this.run_QuestionOptions = [];
     this.run_QuestionOptionsIndex = [];
 
-    console.log("this.values_Questions",this.values_Questions)
-
     for (var i=0; i<this.values_Questions.length; i++)
     {
         var fit = this.values_Questions[i].Fits(keywords);
        
-        console.log("fit",fit);
         if (fit)
         {
             this.run_QuestionOptions.push(this.values_Questions[i].formulation);
@@ -579,7 +576,7 @@ Mathengine.prototype.askQuestion = function(index)
         return false;
     }
         
-    if (index < 0 || index >= values_Questions.length){
+    if (index < 0 || index >= this.values_Questions.length){
         return false;
     }
     
@@ -755,14 +752,14 @@ QuestionData.prototype.Fits = function(s) {
 
 	s = s.trim().replace(/\?/g,' ').toUpperCase();
 	f = s.split(" ");
-    console.log("f",f)
+    
 	for (var i = 0; i < this.keywords.length; i++) {
 		var keyword = this.keywords[i];
 		var temp = false;
 		var options = keyword.trim().split("&");
 		for (var k = 0; k < options.length && !temp; k++) {
-			for (var j = 0; j < f.length || !temp; j++) {
-				if (f[j].trim().indexOf(options[k].trim()) != -1)
+    			for (var j = 0; j < f.length && !temp; j++) {
+                if (f[j].trim().indexOf(options[k].trim()) != -1)
                 {
                 	temp = true;
                 }
