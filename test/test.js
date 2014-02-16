@@ -45,14 +45,29 @@ describe('Mathengine.js', function(){
 
             expect(engine.getAnswer()).to.equal("En genomsnittlig cykel väger 1 kg");
         });
+        
+        it('giveanswer',function(){
+            var engine = new Mathengine(debug_exercise);
+
+            var data = "50";
+			var datab = "st";
+
+			engine.setAnswerValue(data);
+			engine.setAnswerUnit(datab);
+
+            var result = engine.testAnswer();
+
+			var msg = engine.getWrongAnswerMessage();
+            var clue = engine.getAnswerClue();
+
+			console.log("Inkorrekt. " + msg + ", " + clue);   
+        });
 
         it('IsFinished false',function(){
             var engine = new Mathengine(debug_exercise);
             expect(engine.isFinished()).to.equal(false);
         });
 
-        
-         
 
     });
 	
