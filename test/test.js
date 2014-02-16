@@ -34,7 +34,7 @@ describe('Mathengine.js', function(){
 
         });
 
-         it('askQuestion',function(){
+        it('askQuestion and get an answer',function(){
             var engine = new Mathengine(debug_exercise);
 
             var data = "Hur mycket väger en cykel?";
@@ -43,8 +43,16 @@ describe('Mathengine.js', function(){
            
             var questions = engine.askQuestion(0);;
 
-            console.log(engine.getAnswer());
+            expect(engine.getAnswer()).to.equal("En genomsnittlig cykel väger 1 kg");
         });
+
+        it('IsFinished false',function(){
+            var engine = new Mathengine(debug_exercise);
+            expect(engine.isFinished()).to.equal(false);
+        });
+
+        
+         
 
     });
 	
