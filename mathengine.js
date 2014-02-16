@@ -417,7 +417,7 @@ Mathengine.prototype.isFinished = function()
  */
 Mathengine.prototype.setAnswerValue = function(value)
 {
-    this.run_AnswerValue = evaluateText("$"+value+"$");
+    this.run_AnswerValue = this.evaluateText("$"+value+"$");
 }
 
 /**
@@ -771,7 +771,7 @@ QuestionData.prototype.Fits = function(s) {
 	return fit;
 };
 
-function WrongAnserData(v,u,m,c){
+function WrongAnswerData(v,u,m,c){
 	this.val = v;
 	this.unit = u;
 	this.message = m;
