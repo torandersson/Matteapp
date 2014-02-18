@@ -249,18 +249,13 @@ Mathengine.prototype.processQuestions = function()
                 }
                 
             }
-
+			// Testing push från Marcus
            
             var questionData = new QuestionData(
                     keywordsarray, formulation, answer, clues, save);
             this.values_Questions.push(questionData);
-        
-                  
-
         }
 
-
-      
         return true;
     }
     catch(e)
