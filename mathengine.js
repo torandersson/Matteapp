@@ -249,8 +249,7 @@ Mathengine.prototype.processQuestions = function()
                 }
                 
             }
-			// Testing push från Marcus
-           
+
             var questionData = new QuestionData(
                     keywordsarray, formulation, answer, clues, save);
             this.values_Questions.push(questionData);
@@ -541,6 +540,8 @@ Mathengine.prototype.searchQuestion = function(keywords)
     this.run_QuestionOptions = [];
     this.run_QuestionOptionsIndex = [];
 
+	keywords = keywords.toUpperCase();
+
     for (var i=0; i<this.values_Questions.length; i++)
     {
         var fit = this.values_Questions[i].Fits(keywords);
@@ -553,7 +554,7 @@ Mathengine.prototype.searchQuestion = function(keywords)
     }
 
     if (this.run_QuestionOptions.length == 1)
-        askQuestion(0);
+        this.askQuestion(0);
 
     return this.run_QuestionOptions;
 }
