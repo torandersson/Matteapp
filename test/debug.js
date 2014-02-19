@@ -1,6 +1,6 @@
 var debug_exercise = {
 	"title":"Cyklar på flaket",
-	"question":"%name% lastar gamla cyklar på sitt lastbilsflak.\nHur många cyklar kan han lasta på flaket?",
+	"question":"$name$ lastar gamla cyklar på sitt lastbilsflak.\nHur många cyklar kan han lasta på flaket?",
 	"answervalue":" $a$ ",
         "answerunit":"st",
         "tolerance":"0.1",

@@ -176,10 +176,9 @@ Mathengine.prototype.readAssignmentData = function() {
  * @return The same, but processed, string.
  */
 Mathengine.prototype.evaluateText = function(text) {
-	var textEval = new Matte({openToken:"%",closeToken:"%"});
+	var textEval = new Matte({openToken:"$",closeToken:"$"});
 	var evalExpression = textEval.Parse(text,this.values_Lists);
-	var varEval = new Matte({openToken:"$",closeToken:"$"})
-	evalExpression = varEval.Parse(evalExpression,this.values_Variables);
+	evalExpression = textEval.Parse(evalExpression,this.values_Variables);
 	return evalExpression;
 }
  
