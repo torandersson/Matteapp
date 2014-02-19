@@ -60,7 +60,7 @@ describe('Mathengine.js', function(){
         it('givewronganswer',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = "1";
+            var data = 1;
 			var datab = "st";
 
 			engine.setAnswerValue(data);
@@ -76,33 +76,45 @@ describe('Mathengine.js', function(){
 
 		it('GetScoreb', function(){    
            	var engine = new Mathengine(fulldebug_exercise);
-            var score = engine.getLives();
-
-			var data = "1";
+			var data = 1;
 			var datab = "st";
-			var finished = engine.isFinished();
 
 			engine.setAnswerValue(data);
 			engine.setAnswerUnit(datab);
             engine.testAnswer();
 
+			var score = engine.getLives();
+		
             expect(score).to.equal(2);
-			expect(finished).to.equal(false);
         }); 
 
-		it('givecorrectanswer',function(){
+		it('givecorrectanswerresult',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = "100";
-			var datab = "hg";
+            var data = 10;
+			var datab = "kg";
 
 			engine.setAnswerValue(data);
 			engine.setAnswerUnit(datab);
 
             var result = engine.testAnswer();
-			var finished = engine.isFinished();
 
 			expect(result).to.equal(true);
+        });
+
+		it('givecorrectanswerfinished',function(){
+            var engine = new Mathengine(fulldebug_exercise);
+
+            var data = 10;
+			var datab = "kg";
+
+			engine.setAnswerValue(data);
+			engine.setAnswerUnit(datab);
+
+			engine.testAnswer();
+
+			var finished = engine.isFinished();
+
 			expect(finished).to.equal(true);
         });
 
