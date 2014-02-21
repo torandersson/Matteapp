@@ -110,7 +110,6 @@ Mathengine.prototype.setVariables = function() {
 		var data = variables[prop].split(",");
 		this.values_Variables[prop] = this.randomize(data[0],data[1])
 	}
-
 };
 
 Mathengine.prototype.randomize = function(from,to) {
@@ -146,7 +145,7 @@ Mathengine.prototype.getLists = function() {
 
 	for(var propName in lists)
 	{
-		this.values_Lists[propName] = this.shuffle(lists.name)[0];
+		this.values_Lists[propName] = this.evaluateText(this.shuffle(lists.name)[0]);
 	};
 };
 
