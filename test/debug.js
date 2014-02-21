@@ -11,9 +11,9 @@ var debug_exercise = {
          },
 
         "clues" : {
-"a" : {"message":["Fundera över vikter, både hos cyklarna och hur mycket som flaket klarar av.", "Det här är en annan ledtråd."], "value":2, "prio":1},
-"b" : {"message":"Dividera lastbilsflakets viktkapacitet med en cykels vikt.", "value":1, "prio":2},
-"c" : {"message":"Hur många cyklar som får plats handlar om areor (ytor).", "value":2, "prio":3}
+"a" : {"message":["Fundera över vikter, både hos cyklarna och hur mycket som flaket klarar av.", "Det här är en annan ledtråd."], "value":2, "order":1},
+"b" : {"message":"Dividera lastbilsflakets viktkapacitet med en cykels vikt.", "value":1, "order":2},
+"c" : {"message":"Hur många cyklar som får plats handlar om areor (ytor).", "value":2, "order":3}
          },
 
         "lists" : {

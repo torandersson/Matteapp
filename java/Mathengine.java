@@ -19,7 +19,7 @@ import org.json.simple.parser.ParseException;
  * Uses JSON-simple and the BeanShell Javascript interpreter.
  * 
  * @author Marcus Näslund
- * @version 0.94, January 2014
+ * @version 0.95, 21 February 2014
  */
 public class Mathengine
 {
@@ -78,15 +78,17 @@ public class Mathengine
     {
         public double value;
         public String unit;
+        public double tolerance;
         public String message;
         public String[] clues;
         
-        public MathengineWrongAnswerData(double v, String u, String m, String[] c)
+        public MathengineWrongAnswerData(double v, String u, String m, String[] c, double t)
         {
             value = v;
             unit = u;
             message = m;
             clues = c;
+            tolerance = t;
         }
     }
     
@@ -95,13 +97,13 @@ public class Mathengine
      */
     protected class MathengineClueData
     {
-        public long prio;
+        public long order;
         public long value;
         public String[] messages;
         
         public MathengineClueData(long p, long v, String[] m)
         {
-            prio = p;
+            order = p;
             value = v;
             messages = m;
         }
@@ -256,10 +258,10 @@ public class Mathengine
                     msg = new String[] {temp};
                 }
                 
-                long prio = (Long)clue.get("prio");
+                long order = (Long)clue.get("order");
                 long value = (Long)clue.get("value");                
                 
-                values_Clues.put(s, new MathengineClueData(prio, value, msg));
+                values_Clues.put(s, new MathengineClueData(order, value, msg));
             }
             
             return true;
@@ -303,6 +305,7 @@ public class Mathengine
 
         for (int i=0; i<text.length(); i++)
         {
+        	//TODO Not compliant with exercise standard, should be $...$ also for lists
             if (text.charAt(i) == '%')
             {
                 for (int j=i+1; j<text.length(); j++)
@@ -407,14 +410,26 @@ public class Mathengine
      */
     private boolean readAssignmentData()
     {
+    	String temp;
+    	
         m_MainQuestion = evaluateText((String)(m_Question.get("question")));            
         m_AnswerValue = Double.valueOf(
                 evaluateText((String)m_Question.get("answervalue")).trim());
         m_AnswerUnit = (String)m_Question.get("answerunit");
         m_AnswerUnitCategory = getUnitCategory(m_AnswerUnit);
-        m_AnswerTolerance = Double.valueOf(
-                (String)m_Question.get("tolerance"));
+        
+        temp = (String)m_Question.get("tolerance");
+        
+        if (temp == null)
+        	m_AnswerTolerance = 0.0;
+        else
+            m_AnswerTolerance = Double.valueOf(temp);
+            
         m_FollowUp = (String)m_Question.get("followup");
+                
+        if (!m_FollowUp.contains(".json") && m_FollowUp.length() > 0)
+        	m_FollowUp = m_FollowUp + ".json";
+        
         m_Title = (String)m_Question.get("title");
         
         return true;
@@ -589,6 +604,14 @@ public class Mathengine
                         evaluateText((String)q.get("value")).trim());
                 String unit = (String)q.get("unit");
                 String message = (String)q.get("message");
+                double tolerance;
+                
+                String stolerance = (String)q.get("tolerance");
+                if (stolerance == null)
+                	tolerance = 0.0;
+                else
+                	tolerance = Double.valueOf(stolerance);
+                
                 Object temp = q.get("clue");
                 
                 String[] clues;
@@ -607,7 +630,7 @@ public class Mathengine
                 }                
 
                 values_WrongAnswers.add(new MathengineWrongAnswerData(
-                        value, unit, message, clues));
+                        value, unit, message, clues, tolerance));
             }
             
             return true;
@@ -969,18 +992,18 @@ public class Mathengine
      */
     private void findClue()
     {
-        final int maxPrio = 999;
+        final int maxorder = 999;
         boolean found = false;
         
         if (m_OfferClues)
         {
-            for (int p=1; p<maxPrio && !found; p++)
+            for (int p=1; p<maxorder && !found; p++)
             {
                 for (Map.Entry clue : values_Clues.entrySet()) 
                 {
                     if (!found)
                     {
-                        if (values_Clues.get((String)clue.getKey()).prio == p &&
+                        if (values_Clues.get((String)clue.getKey()).order == p &&
                             values_Clues.get((String)clue.getKey()).value > 0)
                         {
                             run_WrongAnswerClue = values_Clues.get((String)clue.getKey()).getClue();

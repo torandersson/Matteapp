@@ -114,7 +114,6 @@ Mathengine.prototype.setVariables = function() {
 		var data = variables[prop].split(",");
 		this.values_Variables[prop] = this.randomize(data[0],data[1])
 	}
-
 };
 
 Mathengine.prototype.randomize = function(from,to) {
@@ -171,6 +170,12 @@ Mathengine.prototype.readAssignmentData = function() {
     this.m_AnswerTolerance = this.m_Question["tolerance"];
     this.m_FollowUp = this.m_Question["followup"];
     this.m_Title = this.m_Question["title"];
+    
+    if (this.m_FollowUp.indexOf(".json") == -1 && this.m_FollowUp.length > 0)
+    	this.m_FollowUp = this.m_FollowUp + ".json";
+    	
+    if (this.m_AnswerTolerance == undefined)
+    	this.m_AnswerTolerance = 0;
         
     return true;
 };
@@ -222,36 +227,28 @@ Mathengine.prototype.getUnitCategory = function(unit) {
  */
 Mathengine.prototype.processQuestions = function()
 {
-    
     try
     {
         var questions = this.m_Question["questions"];
         
-
-        if (questions == null){
+        if (questions == undefined){
             return true;
         }
-        
-        
-        for(var property in questions)
-        {
-        
-       
+          
+        for(var property in questions) {
             var q = questions[property];
 
             var keywords = this.evaluateText(q["keywords"]);
-            var keywordsarray = keywords.split(",");
+            var keywordsarray = (keywords.toUpperCase()).split(",");
             var formulation = this.evaluateText(q["formulation"]);
             var answer = this.evaluateText(q["answer"]);
             var temp = q["clue"];
             
             var clues = [];
-           if(Object.prototype.toString.call( temp ) === '[object Array]') 
-            {
+            if(Object.prototype.toString.call( temp ) === '[object Array]') {
                 clues = temp.slice(0)
             }
-            else
-            {
+            else {
                 clues.push(temp);
             }                
             
@@ -259,7 +256,7 @@ Mathengine.prototype.processQuestions = function()
             
             var save = true;
             if (saveString != null){
-                if (saveString == "false"){
+                if (saveString == "false") {
                     save = false;
                 }
                 
@@ -290,7 +287,7 @@ Mathengine.prototype.processWrongAnswers = function()
     {
        var wronganswers = this.m_Question["wronganswers"];
 
-        if (wronganswers == null){
+        if (wronganswers == undefined){
             return true;
         }
        
@@ -302,6 +299,10 @@ Mathengine.prototype.processWrongAnswers = function()
             var unit = q["unit"];
             var message = q["message"];
             var temp = q["clue"];
+            var tolerance = q["tolerance"];
+            
+            if (tolerance == undefined)
+            	tolerance = 0;
             
             var clues = [];
             
@@ -315,8 +316,10 @@ Mathengine.prototype.processWrongAnswers = function()
                 clues.push(temp2);
             }                   
 
-            this.values_WrongAnswers.push(new WrongAnswerData(
-                    value, unit, message, clues));
+
+            this.values_WrongAnswers.push(new WrongAnserData(
+                    value, unit, message, clues, tolerance));
+
         }
         
         return true;
@@ -339,7 +342,7 @@ Mathengine.prototype.processClues = function()
     {
         var clues = this.m_Question["clues"];
         
-        if (clues == null)
+        if (clues == undefined)
             return true;
         
         for(var prop in clues)
@@ -361,10 +364,10 @@ Mathengine.prototype.processClues = function()
                 msg.push(this.evaluateText(messages));
             }   
             
-            var prio = clue["prio"];
+            var order = clue["order"];
             var value = clue["value"];                
             
-            this.values_Clues[prop] = new ClueData(prio, value, msg);
+            this.values_Clues[prop] = new ClueData(order, value, msg);
         }
         
         return true;
@@ -518,9 +521,11 @@ Mathengine.prototype.findWrongAnswerMatch = function()
     for(var prop in this.values_WrongAnswers){
 
 		var m = this.values_WrongAnswers[prop];
-        
-        var result = (m.val == this.run_AnswerValue) 
-            && (m.unit == this.run_AnswerUnit);
+
+
+		//TODO: Do automatic conversion of units just like when checking for correct answer
+        var result = (this.run_AnswerValue >= m.value - m.tolerance && this.run_AnswerValue <= m.value + m.tolerance) 
+            && (this.m.unit == this.run_AnswerUnit);
          
         if (result)
         {
@@ -695,19 +700,19 @@ Mathengine.prototype.getAnswerClue = function()
  */
 Mathengine.prototype.findClue = function()
 {
-    var maxPrio = 999;
+    var maxOrder = 999;
     var found = false;
     
     if (this.m_OfferClues)
     {
-        for (var p=1; p<maxPrio && !found; p++)
+        for (var p=1; p<maxOrder && !found; p++)
         {
             for (var prop in this.values_Clues) 
             {
             	var clue = this.values_Clues[prop]
                 if (!found)
                 {
-                    if (this.values_Clues[prop].prio == p &&
+                    if (this.values_Clues[prop].order == p &&
                         this.values_Clues[prop].value > 0)
                     {
                         this.run_WrongAnswerClue = this.values_Clues[prop].getClue();
@@ -784,15 +789,16 @@ QuestionData.prototype.Fits = function(s) {
 	return fit;
 };
 
-function WrongAnswerData(v,u,m,c){
+function WrongAnswerData(v,u,m,c,t){
 	this.val = v;
 	this.unit = u;
 	this.message = m;
 	this.clues = c;
+	this.tolerance = t;
 }
 
-function ClueData(p,v,m){
-	this.prio = p;
+function ClueData(o,v,m){
+	this.order = o;
     this.val = v;
     this.messages = m;
 }
