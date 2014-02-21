@@ -8,13 +8,13 @@ var fulldebug_exercise = {
 
 	"wronganswers" : { 
 "a" : {"value":"$1$", "unit":"st", "message":"Felmeddelande 1 x = $x$", "clue":"b"},
-"b" : {"value":"$2$", "unit":"st", "message":"Felmeddelande 2 y = $y$", "clue":"c"} 
+"b" : {"value":"$y$", "unit":"kg", "message":"Felmeddelande 2 y = $y$", "clue":"c"} 
          },
 
         "clues" : {
-"a" : {"message":"Ledtråd a", "value":2, "prio":1},
-"b" : {"message":"Ledtråd b", "value":2, "prio":2},
-"c" : {"message":"Ledtråd c", "value":2, "prio":3}
+"a" : {"message":"Ledtråd a", "value":2, "order":1},
+"b" : {"message":"Ledtråd b", "value":2, "order":2},
+"c" : {"message":"Ledtråd c", "value":2, "order":3}
          },
 
         "lists" : {

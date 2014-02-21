@@ -60,7 +60,7 @@ describe('Mathengine.js', function(){
         it('givewronganswer',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = 1;
+            var data = "1";
 			var datab = "st";
 
 			engine.setAnswerValue(data);
@@ -71,12 +71,27 @@ describe('Mathengine.js', function(){
             var clue = engine.getAnswerClue();
 
 			expect(msg).to.equal("Felmeddelande 1 x = 1");
-			expect(clue).to.equal("Ledtråd a"); 
+        });
+        
+        it('givewronganswerdifferentunit',function(){
+            var engine = new Mathengine(fulldebug_exercise);
+
+            var data = "$y*10$";
+			var datab = "hg";
+
+			engine.setAnswerValue(data);
+			engine.setAnswerUnit(datab);
+            engine.testAnswer();
+
+			var msg = engine.getWrongAnswerMessage();
+            var clue = engine.getAnswerClue();
+
+			expect(msg).to.equal("Felmeddelande 2 y = 5");
         });
 
 		it('GetScoreb', function(){    
            	var engine = new Mathengine(fulldebug_exercise);
-			var data = 1;
+			var data = "1";
 			var datab = "st";
 
 			engine.setAnswerValue(data);
@@ -91,7 +106,7 @@ describe('Mathengine.js', function(){
 		it('givecorrectanswerresult',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = 10;
+            var data = "10";
 			var datab = "kg";
 
 			engine.setAnswerValue(data);
@@ -105,7 +120,7 @@ describe('Mathengine.js', function(){
 		it('givecorrectanswerfinished',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = 10;
+            var data = "10";
 			var datab = "kg";
 
 			engine.setAnswerValue(data);
