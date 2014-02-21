@@ -51,9 +51,18 @@ function Mathengine (fname) {
 	this.toSi["km"] = function(value){return value*1000.0;}
 	this.toSi["st"] = function(value){return value;}
 
+     this.m_Units = [
+        ["kg", "hg", "g", "ton"],
+        ["l", "dl", "cl", "ml"],
+        ["m", "dm", "cm", "mm", "km"],
+        ["st"]
+    ];
+
     if(fname != undefined){
     	this.init(fname);
     }
+
+
 
     //this.clear();
 }
@@ -66,12 +75,7 @@ Mathengine.prototype.clear = function() {
     this.values_WrongAnswers = [];
     this.values_Clues = {};
         
-    this.m_Units = [
-    	["kg", "hg", "g", "ton"],
-    	["l", "dl", "cl", "ml"],
-    	["m", "dm", "cm", "mm", "km"],
-    	["st"]
-    ];
+    
         
     this.m_OfferClues = true;
 };
@@ -146,7 +150,7 @@ Mathengine.prototype.getLists = function() {
 
 	for(var propName in lists)
 	{
-		this.values_Lists[propName] = this.shuffle(lists.name)[0];
+		this.values_Lists[propName] = this.shuffle(lists[propName])[0];
 	};
 };
 
@@ -158,8 +162,10 @@ Mathengine.prototype.shuffle = function (o) { //v1.0
 };
 
 Mathengine.prototype.readAssignmentData = function() {
-	this.m_MainQuestion = this.evaluateText(this.m_Question["question"]);            
+	
+    this.m_MainQuestion = this.evaluateText(this.m_Question["question"]);  
     this.m_AnswerValue = this.evaluateText(this.m_Question["answervalue"]).trim();
+   
     this.m_AnswerUnit = this.m_Question["answerunit"];
     this.m_AnswerUnitCategory = this.getUnitCategory(this.m_AnswerUnit);
     this.m_AnswerTolerance = this.m_Question["tolerance"];
@@ -177,9 +183,17 @@ Mathengine.prototype.readAssignmentData = function() {
  */
 Mathengine.prototype.evaluateText = function(text) {
 	var textEval = new Matte({openToken:"$",closeToken:"$"});
-	var evalExpression = textEval.Parse(text,this.values_Lists);
-	evalExpression = textEval.Parse(evalExpression,this.values_Variables);
-	return evalExpression;
+
+    for(var prop in this.values_Lists)
+    {
+        this.values_Variables[prop] = this.values_Lists[prop];
+    }
+   // console.log("this.values_Variables",this.values_Variables)
+
+   // var evalExpression = textEval.Parse(text,this.values_Lists);
+   var evalExpression = textEval.Parse(text,this.values_Variables);
+	//console.log("evalExpression",evalExpression);
+    return evalExpression;
 }
  
 /**
@@ -189,9 +203,11 @@ Mathengine.prototype.evaluateText = function(text) {
  * @return A string array. Is null if unit not recognized.
  */
 Mathengine.prototype.getUnitCategory = function(unit) {
+    
     for (var i=0; i<this.m_Units.length; i++)
     {
-        var category = m_Units[i];
+        var category = this.m_Units[i];
+        
         if(category.indexOf(unit) > -1){
         	return category;
         }
@@ -299,7 +315,7 @@ Mathengine.prototype.processWrongAnswers = function()
                 clues.push(temp2);
             }                   
 
-            this.values_WrongAnswers.push(new WrongAnserData(
+            this.values_WrongAnswers.push(new WrongAnswerData(
                     value, unit, message, clues));
         }
         
@@ -440,8 +456,9 @@ Mathengine.prototype.convertToSI = function(value, unit)
  */
 Mathengine.prototype.testAnswer = function()
 {
-    if (this.m_AnswerUnit == null)
+    if (this.m_AnswerUnit == null){
         return false;
+    }
     
     var result = false;
 
@@ -498,18 +515,19 @@ Mathengine.prototype.testAnswer = function()
  */
 Mathengine.prototype.findWrongAnswerMatch = function()
 {
-	for(var prop in this.values_WrongAnswers){
+    for(var prop in this.values_WrongAnswers){
 
 		var m = this.values_WrongAnswers[prop];
-
-        var result = (m.value == this.run_AnswerValue) 
-            && (this.m.unit == this.run_AnswerUnit);
         
+        var result = (m.val == this.run_AnswerValue) 
+            && (m.unit == this.run_AnswerUnit);
+         
         if (result)
         {
+
         	for(var clue in m.clues)
         	{
-        		values_Clues[clue].value--;	
+              	this.values_Clues[m.clues[clue]].value--;	
         	}
             
             return m.message;

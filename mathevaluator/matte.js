@@ -27,23 +27,27 @@ Matte.prototype.Parse = function(expression,scope) {
 		evaluated = {},
 		result = this.expressionFinder.Parse(expression);
 
-	for (var i = 0; i < result.length; i++) {
-		var tmp = result[i];
-		if(scope){
-			tmp = this.replacer.Parse(scope,result[i]);
-    }
+  if(Object.prototype.toString.call( result ) === '[object Array]') {
+  	
+    for (var i = 0; i < result.length; i++) {
+  		var tmp = result[i];
+  		if(scope){
+  			tmp = this.replacer.Parse(scope,result[i]);
+        console.log("tmp",tmp);
+      }
 
-    
-    try {
-      evaluated[result[i]] =  eval(this.GetFunc(tmp)); //this.expr.Calc(tmp);
-    }
-    catch(err){ //this is damn ugly convert to func better to avoid error
-      evaluated[result[i]] =  (this.GetFunc(tmp));
-    }
+      
+      try {
+        evaluated[result[i]] =  eval(this.GetFunc(tmp)); //this.expr.Calc(tmp);
+      }
+      catch(err){ //this is damn ugly convert to func better to avoid error
+        evaluated[result[i]] =  (this.GetFunc(tmp));
+      }
 
-    //console.log("evaluated",evaluated)	  
-    expression = expression.replace(this.expressionFinder.GetOpenToken()+result[i]+this.expressionFinder.GetCloseToken(),evaluated[result[i]]);
-	};
+      //console.log("evaluated",evaluated)	  
+      expression = expression.replace(this.expressionFinder.GetOpenToken()+result[i]+this.expressionFinder.GetCloseToken(),evaluated[result[i]]);
+  	};
+  }
 
 	return expression;
 };
