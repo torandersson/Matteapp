@@ -27,16 +27,18 @@ Replacer.prototype.Parse = function(valueContainer,expression) {
 		
 		if(!tokens)	continue;
 		for (var j = tokens.length - 1; j >= 0; j--) {
-
 			var obj = tokens[j];
-
-			var regExp = new RegExp(obj.token,"g");
-			result = result.replace(regExp,obj.value);
+			var regExp = new RegExp("(?!{{)("+obj.token+")(?!}})","g");
+            var s = obj.value.toString();
+            var fixedStr = "";
+            for (var t = 0; t < s.length; t++) {
+            	fixedStr += "{{"+s[t]+"}}";	
+            }
+			result =  result.replace(regExp,fixedStr);
 		};
 
 	};
-	return result;
-
+	return result.replace(/{{/g,"").replace(/}}/g,"");
 };
 
 

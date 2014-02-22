@@ -187,18 +187,21 @@ Mathengine.prototype.readAssignmentData = function() {
  * @return The same, but processed, string.
  */
 Mathengine.prototype.evaluateText = function(text) {
-	var textEval = new Matte({openToken:"$",closeToken:"$"});
+    var textEval = new Matte({openToken:"$",closeToken:"$"});
+    var merged = this.mergeObject(this.values_Lists,this.values_Variables);
+    var evalExpression = textEval.Parse(text,merged);
+    return evalExpression;
+}
 
+Mathengine.prototype.mergeObject = function(obj1,obj2)
+{
+    //Merge object
     for(var prop in this.values_Lists)
     {
         this.values_Variables[prop] = this.values_Lists[prop];
     }
-   // console.log("this.values_Variables",this.values_Variables)
 
-   // var evalExpression = textEval.Parse(text,this.values_Lists);
-   var evalExpression = textEval.Parse(text,this.values_Variables);
-	//console.log("evalExpression",evalExpression);
-    return evalExpression;
+    return this.values_Variables;
 }
  
 /**
@@ -297,7 +300,7 @@ Mathengine.prototype.processWrongAnswers = function()
 
             var value =	this.evaluateText(q["value"]).trim();
             var unit = q["unit"];
-            var message = q["message"];
+            var message = this.evaluateText(q["message"]);
             var temp = q["clue"];
             var tolerance = q["tolerance"];
             
@@ -307,7 +310,7 @@ Mathengine.prototype.processWrongAnswers = function()
             var clues = [];
             
             if (Object.prototype.toString.call( temp ) === '[object Array]') 
-             {
+            {
                 clues = temp.slice(0);
             }
             else
@@ -317,7 +320,7 @@ Mathengine.prototype.processWrongAnswers = function()
             }                   
 
 
-            this.values_WrongAnswers.push(new WrongAnserData(
+            this.values_WrongAnswers.push(new WrongAnswerData(
                     value, unit, message, clues, tolerance));
 
         }
@@ -482,8 +485,8 @@ Mathengine.prototype.testAnswer = function()
         
         if (correctCategory)
         {
-            var m1 = convertToSI(this.m_AnswerValue, this.m_AnswerUnit);
-            var m2 = convertToSI(this.run_AnswerValue, this.run_AnswerUnit);
+            var m1 = this.convertToSI(this.m_AnswerValue, this.m_AnswerUnit);
+            var m2 = this.convertToSI(this.run_AnswerValue, this.run_AnswerUnit);
             
             result = (Math.abs(m1-m2) < this.m_AnswerTolerance);
         }
@@ -505,7 +508,6 @@ Mathengine.prototype.testAnswer = function()
         this.m_Lives--;
         
         this.run_WrongAnswerMessage = this.findWrongAnswerMatch();
-        
         this.findClue();
     }
 
@@ -526,10 +528,9 @@ Mathengine.prototype.findWrongAnswerMatch = function()
 		//TODO: Do automatic conversion of units just like when checking for correct answer
         var result = (this.run_AnswerValue >= m.value - m.tolerance && this.run_AnswerValue <= m.value + m.tolerance) 
             && (this.m.unit == this.run_AnswerUnit);
-         
-        if (result)
+        
+        if (!result)
         {
-
         	for(var clue in m.clues)
         	{
               	this.values_Clues[m.clues[clue]].value--;	

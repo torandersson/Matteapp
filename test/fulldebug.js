@@ -1,6 +1,6 @@
 var fulldebug_exercise = {
 	"title":"Rubrik",
-	"question":"Det här är $name name$ en uppgift för $name$ $name$.",
+	"question":"Det här är en uppgift för $name$.",
 	"answervalue":"$a$",
         "answerunit":"kg",
         "tolerance":"0.1",

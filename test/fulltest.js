@@ -1,7 +1,7 @@
 //Note exercise is the json i will change this to be loaded from disk
 
 
-describe('Mathengine.js', function(){
+describe('Mathengine.js fulldebug.js', function(){
     
     describe('Engine', function(){
         

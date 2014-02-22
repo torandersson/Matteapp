@@ -33,7 +33,6 @@ Matte.prototype.Parse = function(expression,scope) {
   		var tmp = result[i];
   		if(scope){
   			tmp = this.replacer.Parse(scope,result[i]);
-        console.log("tmp",tmp);
       }
 
       
