@@ -36,20 +36,20 @@ function Mathengine (fname) {
     this.m_Units = [];
 
     this.toSi = {};
-	this.toSi["kg"] = function(value){return value;}
-	this.toSi["hg"] = function(value){return value/10.0;}
-	this.toSi["g"] = function(value){return value/1000.0;}
-	this.toSi["ton"] = function(value){return value*1000.0;}
-	this.toSi["l"] = function(value){return value;}
-	this.toSi["dl"] = function(value){return value/10.0;}
-	this.toSi["cl"] = function(value){return value/100.0;}
-	this.toSi["ml"] = function(value){return value/1000.0;}
-	this.toSi["m"] = function(value){return value;}
-	this.toSi["dm"] = function(value){return value/10.0;}
-	this.toSi["cm"] = function(value){return value/100.0;}
-	this.toSi["mm"] = function(value){return value/1000.0;}
-	this.toSi["km"] = function(value){return value*1000.0;}
-	this.toSi["st"] = function(value){return value;}
+	this.toSi["kg"] = function(value){return value;};
+	this.toSi["hg"] = function(value){return value/10.0;};
+	this.toSi["g"] = function(value){return value/1000.0;};
+	this.toSi["ton"] = function(value){return value*1000.0;};
+	this.toSi["l"] = function(value){return value;};
+	this.toSi["dl"] = function(value){return value/10.0;};
+	this.toSi["cl"] = function(value){return value/100.0;};
+	this.toSi["ml"] = function(value){return value/1000.0;};
+	this.toSi["m"] = function(value){return value;};
+	this.toSi["dm"] = function(value){return value/10.0;};
+	this.toSi["cm"] = function(value){return value/100.0;};
+	this.toSi["mm"] = function (value) {return value / 1000.0;};
+	this.toSi["km"] = function(value){return value*1000.0;};
+	this.toSi["st"] = function (value) {return value;};
 
     this.m_Units = [
         ["kg", "hg", "g", "ton"],
@@ -330,7 +330,7 @@ Mathengine.prototype.processWrongAnswers = function()
 
 /**
  * Finds all clues contained in the file and stores them locally.
- * @return True if there were no problems.
+ * @return boolean if there were no problems.
  */
 Mathengine.prototype.processClues = function()
 {
@@ -338,8 +338,9 @@ Mathengine.prototype.processClues = function()
     {
         var clues = this.m_Question["clues"];
         
-        if (clues == undefined)
+        if (clues == undefined){
             return true;
+        }
         
         for(var prop in clues)
         {
