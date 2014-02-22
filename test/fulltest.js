@@ -76,8 +76,8 @@ describe('Mathengine.js fulldebug.js', function(){
         it('givewronganswerdifferentunit',function(){
             var engine = new Mathengine(fulldebug_exercise);
 
-            var data = "$y*10$";
-			var datab = "hg";
+            var data = "50*100";
+			var datab = "g";
 
 			engine.setAnswerValue(data);
 			engine.setAnswerUnit(datab);
@@ -132,6 +132,5 @@ describe('Mathengine.js fulldebug.js', function(){
 
 			expect(finished).to.equal(true);
         });
-
     });	
 })

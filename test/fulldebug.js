@@ -5,10 +5,10 @@ var fulldebug_exercise = {
         "answerunit":"kg",
         "tolerance":"0.1",
         "followup":"",
-
+        
 	"wronganswers" : { 
 "a" : {"value":"$1$", "unit":"st", "message":"Felmeddelande 1 x = $x$", "clue":"b"},
-"b" : {"value":"$y$", "unit":"kg", "message":"Felmeddelande 2 y = $y$", "clue":"c"} 
+"b" : {"value":"$y*y*2$", "unit":"hg", "message":"Felmeddelande 2 y = $y$", "clue":"c"} 
          },
 
         "clues" : {

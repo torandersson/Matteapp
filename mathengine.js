@@ -37,7 +37,7 @@ function Mathengine (fname) {
 
     this.toSi = {};
 	this.toSi["kg"] = function(value){return value;}
-	this.toSi["hg"] = function(value){value/10;}
+	this.toSi["hg"] = function(value){return value/10.0;}
 	this.toSi["g"] = function(value){return value/1000.0;}
 	this.toSi["ton"] = function(value){return value*1000.0;}
 	this.toSi["l"] = function(value){return value;}
@@ -51,7 +51,7 @@ function Mathengine (fname) {
 	this.toSi["km"] = function(value){return value*1000.0;}
 	this.toSi["st"] = function(value){return value;}
 
-     this.m_Units = [
+    this.m_Units = [
         ["kg", "hg", "g", "ton"],
         ["l", "dl", "cl", "ml"],
         ["m", "dm", "cm", "mm", "km"],
@@ -61,8 +61,6 @@ function Mathengine (fname) {
     if(fname != undefined){
     	this.init(fname);
     }
-
-
 
     //this.clear();
 }
@@ -74,9 +72,7 @@ Mathengine.prototype.clear = function() {
     this.values_FoundAnswers = [];
     this.values_WrongAnswers = [];
     this.values_Clues = {};
-        
-    
-        
+           
     this.m_OfferClues = true;
 };
 
@@ -288,7 +284,7 @@ Mathengine.prototype.processWrongAnswers = function()
 {
     try
     {
-       var wronganswers = this.m_Question["wronganswers"];
+        var wronganswers = this.m_Question["wronganswers"];
 
         if (wronganswers == undefined){
             return true;
@@ -309,16 +305,13 @@ Mathengine.prototype.processWrongAnswers = function()
             
             var clues = [];
             
-            if (Object.prototype.toString.call( temp ) === '[object Array]') 
-            {
+            if (Object.prototype.toString.call( temp ) === '[object Array]') {
                 clues = temp.slice(0);
             }
-            else
-            {
+            else {
                 var temp2 = temp;
                 clues.push(temp2);
             }                   
-
 
             this.values_WrongAnswers.push(new WrongAnswerData(
                     value, unit, message, clues, tolerance));
@@ -356,8 +349,7 @@ Mathengine.prototype.processClues = function()
             
             var msg = [];
             
-             if (Object.prototype.toString.call( messages ) === '[object Array]') 
-             {
+            if (Object.prototype.toString.call( messages ) === '[object Array]') {
                 for (var i = 0; i < messages.length; i++) {
                    msg.push(this.evaluateText(messages[i]));
                 };
@@ -397,7 +389,7 @@ Mathengine.prototype.calculate = function(terms)
     }
     catch (e)
     {
-       console.log(e)
+        console.log(e)
         return 0;
     }        
 }
@@ -470,7 +462,7 @@ Mathengine.prototype.testAnswer = function()
 
     if (this.m_AnswerUnit == this.run_AnswerUnit)       
     {
-        result = (this.m_AnswerValue == this.run_AnswerValue);
+        result = (Math.abs(this.m_AnswerValue - this.run_AnswerValue) < this.m_AnswerTolerance);
     }
     else
     {
@@ -507,7 +499,7 @@ Mathengine.prototype.testAnswer = function()
     {
         this.m_Lives--;
         
-        this.run_WrongAnswerMessage = this.findWrongAnswerMatch();
+        this.findWrongAnswerMatch();
         this.findClue();
     }
 
@@ -522,25 +514,31 @@ Mathengine.prototype.findWrongAnswerMatch = function()
 {
     for(var prop in this.values_WrongAnswers){
 
-		var m = this.values_WrongAnswers[prop];
-
-
-		//TODO: Do automatic conversion of units just like when checking for correct answer
-        var result = (this.run_AnswerValue >= m.value - m.tolerance && this.run_AnswerValue <= m.value + m.tolerance) 
-            && (this.m.unit == this.run_AnswerUnit);
+		var m = this.values_WrongAnswers[prop];		
+		
+		var correctcategory = true;
+		
+		for (var unitlist in this.m_Units) {
+			if (unitlist.indexOf(m.unit) >= 0 && unitlist.indexOf(this.run_AnswerUnit) < 0)
+				correctcategory = false;
+		}
+		
+		var a = this.convertToSI(m.value, m.unit);
+        var b = this.convertToSI(this.run_AnswerValue, this.run_AnswerUnit);
         
-        if (!result)
-        {
-        	for(var clue in m.clues)
-        	{
-              	this.values_Clues[m.clues[clue]].value--;	
+		var result = (Math.abs(a-b) <= m.tolerance) && correctcategory;
+        
+        if (result) {
+        	for(var clue in m.clues) {
+              	this.values_Clues[m.clues[clue]].value = 0;	
         	}
             
-            return m.message;
+            this.run_WrongAnswerMessage = m.message;
+            return;
         }
     }
     
-    return "";
+    this.run_WrongAnswerMessage = "";
 }
 
 /**
@@ -791,7 +789,7 @@ QuestionData.prototype.Fits = function(s) {
 };
 
 function WrongAnswerData(v,u,m,c,t){
-	this.val = v;
+	this.value = v;
 	this.unit = u;
 	this.message = m;
 	this.clues = c;
