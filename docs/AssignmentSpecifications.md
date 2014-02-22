@@ -1,4 +1,4 @@
-#Exercise specifications
+#Exercise specifications (v1.0)
 
 The assignments are written in JSON. All nodes are mandatory unless otherwise specified.
 
@@ -9,7 +9,7 @@ The assignments are written in JSON. All nodes are mandatory unless otherwise sp
 ##answervalue
 **String:** The correct answer value. The string can be formulated as an integer (like “25”), a float (like “2.5”) or an expression to be evaluated (like “$2+0.5$”).
 ##answerunit
-**String:** The correct answer unit. Must be one of the following: kg, hg, g, l, dl, cl, ml, m, dm, cm, mm.
+**String:** The correct answer unit. Must be one of the following: ton, kg, hg, g, l, dl, cl, ml, m, dm, cm, mm.
 ##tolerance
 **Optional. String:** Provide a tolerance setting for the correct answer. The string can be formulated as an integer (like “25”), a float (like “2.5”) or an expression to be evaluated (like “$2+0.5$”). May be set to “0” to only accept exact answers. If not included, tolerance is assumed to be 0.
 *FIXA: Behöver inte vara angiven* 
