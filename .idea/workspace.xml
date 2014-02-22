@@ -25,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="app.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gui/app.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="75" selection-start="2238" selection-end="2238" vertical-scroll-proportion="0.7194245" vertical-offset="340" max-vertical-offset="1035">
+            <state line="48" column="38" selection-start="1935" selection-end="1935" vertical-scroll-proportion="-15.833333" vertical-offset="340" max-vertical-offset="1035">
               <folding />
             </state>
           </provider>
@@ -61,10 +61,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mathengine.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="mathengine.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mathengine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="455" column="44" selection-start="11410" selection-end="11410" vertical-scroll-proportion="0.0" vertical-offset="6436" max-vertical-offset="12225">
+            <state line="351" column="0" selection-start="9389" selection-end="9389" vertical-scroll-proportion="-6.8650904" vertical-offset="10201" max-vertical-offset="11445">
               <folding />
             </state>
           </provider>
@@ -92,8 +92,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/mathengine.js" />
         <option value="$PROJECT_DIR$/gui/app.html" />
+        <option value="$PROJECT_DIR$/mathengine.js" />
       </list>
     </option>
   </component>
@@ -329,13 +329,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/mathengine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="455" column="44" selection-start="11410" selection-end="11410" vertical-scroll-proportion="0.0" vertical-offset="6436" max-vertical-offset="12225">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui/css/mathexerciseengine.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="128" selection-start="3410" selection-end="3410" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4800">
@@ -366,7 +359,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui/app.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="75" selection-start="2238" selection-end="2238" vertical-scroll-proportion="0.7194245" vertical-offset="340" max-vertical-offset="1035">
+        <state line="48" column="38" selection-start="1935" selection-end="1935" vertical-scroll-proportion="-15.833333" vertical-offset="340" max-vertical-offset="1035">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mathengine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="351" column="0" selection-start="9389" selection-end="9389" vertical-scroll-proportion="-6.8650904" vertical-offset="10201" max-vertical-offset="11445">
           <folding />
         </state>
       </provider>
