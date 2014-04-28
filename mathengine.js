@@ -728,14 +728,14 @@ QuestionData.prototype.fits = function(s) {
 		        }
 			}
 		}
-	}
-	
-	if (!temp) {
-		fit = false;
+
+		if (!temp) {
+			fit = false;
+		}
 	}	
 
 	return fit;
-};
+}
 
 function WrongAnswerData(v,u,m,c,t) {
 	this.value = v;

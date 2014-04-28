@@ -30,7 +30,7 @@ describe('Mathengine.js debug.js', function(){
             var questions = engine.searchQuestion(data);
 
             expect(questions[0]).to.equal("Hur mycket väger en cykel?");
-            expect(questions[1]).to.equal("Hur stor yta tar en cykel upp?")
+            expect(questions.length).to.equal(1);
 
         });
 
